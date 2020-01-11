@@ -53,8 +53,10 @@ int	_get_map(t_info *info, int fd)
 		return (0);
 	while (++i < info->nline)
 	{
-		if (!(info->map[i] = _get_line(fd)))
+		if (!(info->map[i] = _mallocstr(info->ncol)))
 			return (_free_tab(info));
+		r = read(fd, info->map[i], info->ncol);
+		info->map[i][(r < 0) ? 0 : r] = '\0';
 		if (!(_check_char(info->map[i], info)))
 		{
 			_free_str(&info->map[i]);
